@@ -71,9 +71,10 @@ def buy_car(request, car_id):
         messages.error(request, f'Sorry, {car.name} is no longer available.')
         return redirect('home')
 
-
+@login_required
 def profile(request):
-    cars = Car.objects.all()
+    user = request.user
+    cars = Car.objects.filter(purchase__user=user)
     return render(request, 'profile.html', {'cars': cars})
 
 @login_required
