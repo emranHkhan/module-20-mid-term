@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="row g-0 shadow">
+    <div class="col-5 d-flex align-items-center justify-content-center px-4">
+      <h2>Discover Your Dream Ride at Car Mart – Where Every Drive Is an Adventure!</h2>
+    </div>
+    <div class="col-7">
+        <img class="w-100" src="{% static 'images/hero.jpg' %}" alt="hero-image">
+    </div>
+</div>
+<div class="w-100 d-flex mt-4 py-2">
+  <a class="text-decoration-none btn btn-secondary text-white d-block ms-2" href="{% url "home" %}">All</a>
+    {% for brand in brands %}
+    <a class="text-decoration-none btn text-white d-block ms-2 {% if filtered_brand.name == brand.name %}btn-primary{% else %}btn-secondary{% endif %}" href="{% url 'cars_by_brand' brand.id %}">{{ brand.name }}</a>
+    {% endfor %}
+</div>
+
+
+<div class="row g-5 py-5">
+  {% if filtered_brand %}
+  <h2>Total Result: {{cars | length}}</h2>
+  {% for car in cars %}
+  <div class="col-md-3">
+    <div class="card shadow border-0 bg-light" style="width: 18rem">
+      <img src="{{car.image.url}}" class="card-img-top" alt="{{car.name}}" />
+      <div class="card-body">
+        <h5 class="card-title">{{car.name}}</h5>
+        <p class="card-text">{{car.details}}</p>
+        <p class="card-text">{{car.brand}}</p>
+        <p class="card-text">{{car.price}}</p>
+        <a href="{% url "details" car.id %}" class="btn btn-info">See Details</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  
+  {% else %}
+  {% for car in cars %}
+  <div class="col-md-3">
+    <div class="card shadow border-0 bg-light" style="width: 18rem">
+      <img src="{{car.image.url}}" class="card-img-top" alt="{{car.name}}" />
+      <div class="card-body">
+        <h5 class="card-title">{{car.name}}</h5>
+        <p class="card-text">{{car.details}}</p>
+        <p class="card-text">{{car.brand}}</p>
+        <p class="card-text">{{car.price}}</p>
+        <a href="{% url "details" car.id %}" class="btn btn-info">See Details</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  
+  {% endif %}
+</div>
+{% endblock %}
